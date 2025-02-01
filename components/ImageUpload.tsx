@@ -5,7 +5,7 @@ import { IKImage, ImageKitProvider, IKUpload } from 'imagekitio-next';
 import config from '@/lib/config';
 import ImageKit from 'imagekit';
 import Image from 'next/image';
-import { toast, useToast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
 
 const {
   env: {
