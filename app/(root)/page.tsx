@@ -7,8 +7,8 @@ import { users } from '@/database/schema';
 import Image from 'next/image';
 
 export default async function Home() {
-  const result = await db.select().from(users);
-  console.log(JSON.stringify(result, null, 2));
+  // const result = await db.select().from(users);
+  // console.log(JSON.stringify(result, null, 2));
 
   return (
     <>
