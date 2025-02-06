@@ -1,8 +1,8 @@
 import NextAuth, { User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { db } from './database/drizzle';
+import { db } from '@/database/drizzle';
 import { eq } from 'drizzle-orm';
-import { users } from './database/schema';
+import { users } from '@/database/schema';
 import { compare } from 'bcryptjs';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -20,17 +20,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const user = await db.select().from(users).where(eq(users.email, credentials.email)).limit(1);
+        const user = await db.select().from(users).where(eq(users.email, credentials.email.toString())).limit(1);
 
-        if (user.length === 0) {
-          return null;
-        }
+        if (user.length === 0) return null;
 
         const isPasswordValid = await compare(credentials.password.toString(), user[0].password);
 
-        if (!isPasswordValid) {
-          return null;
-        }
+        if (!isPasswordValid) return null;
 
         return {
           id: user[0].id.toString(),
@@ -53,7 +49,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       if (session.user) {
-        // session.user.id = token.id;
+        session.user.id = token.id;
         session.user.name = token.name;
       }
       return session;
